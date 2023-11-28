@@ -1,16 +1,15 @@
-
-from transformers import AutoTokenizer
-import transformers
+from transformers import AutoTokenizer, pipeline
 import torch
 
-model = "meta-llama/Llama-2-7b-chat-hf"
+# Local model directory (assuming 'model' is the directory where you have saved the model)
+local_model_dir = "model"
 
-tokenizer = AutoTokenizer.from_pretrained(model)
+tokenizer = AutoTokenizer.from_pretrained(local_model_dir)
 pipeline = transformers.pipeline(
     "text-generation",
-    model=model,
+    model=local_model_dir,
     torch_dtype=torch.float16,
-    device_map="auto",
+    device_map="auto"
 )
 
 sequences = pipeline(
@@ -21,7 +20,9 @@ sequences = pipeline(
     eos_token_id=tokenizer.eos_token_id,
     max_length=200,
 )
+
 print('\n\n')
 print("\033[92m" + "-- LLAMA 2 --" + "\033[0m")
 for seq in sequences:
     print(f"Result: {seq['generated_text']}")
+
