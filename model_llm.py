@@ -13,7 +13,7 @@ class ModelLLM:
         self.model = AutoModelForCausalLM.from_pretrained(model_name, device_map='auto', torch_dtype=torch.float16)
         self.model.eval()
 
-    def generate_text(self, input_prompt, max_new_tokens=100):
+    def generate_text(self, input_prompt, max_new_tokens=30):
         model_input = self.tokenizer(input_prompt, return_tensors="pt").to("cuda")
         input_length = model_input.input_ids.size(1)
 
