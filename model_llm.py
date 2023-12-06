@@ -55,3 +55,8 @@ print(text)
 input_embeddings = model_llm.get_embeddings_from_input(input_text)
 print(input_embeddings.shape)
 
+
+model.generate_text('oi tudo bem')
+
+model.plot_convex_hull(text1=caminho.txt)
+
