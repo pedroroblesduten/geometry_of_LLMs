@@ -4,7 +4,7 @@ from scipy.spatial import ConvexHull
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
-from model_llm import ModelLLM
+from llm_module.model_llm import ModelLLM
 
 class LLMGeometricMetrics:
     def __init__(self, model_name):

@@ -4,7 +4,7 @@ from scipy.spatial import ConvexHull
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 from tabulate import tabulate
-from model_llm import ModelLLM
+from llm_module.model_llm import ModelLLM
 from scipy.spatial import ConvexHull
 from sklearn.decomposition import FastICA
 from sklearn.decomposition import PCA
