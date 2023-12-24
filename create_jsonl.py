@@ -3,10 +3,20 @@ import json
 # Conteúdo de exemplo a ser salvo no arquivo JSONL
 example_content = [
     {
-        "autor": "clarice lispector",
-        "prompt": "escreva um paragrafo para continuar o texto a seguir: ",
-        "begin_original": "o que te direi: te direi os instantes. exorbito-me e só então é que",
-        "complete_original": "tenho por dom a paixao, nas queimadas de tronco seco contorço-me as labaredas"
+        "author": "clarice lispector",
+        "prompt_type": 1,
+        "prompt": "write a paragraph to continue the story that follows.: \n",
+        "begin_original": "'estou procurando, estou procurando. Estou tentando entender. Tentando dar a alguém o que vivi e não sei a quem, mas não quero ficar com o que vivi. Não sei o que fazer com o que vivi, tenho medo dessa desorganização profunda.'",
+        "complete_original": "'estou procurando, estou procurando. Estou tentando " +
+                             "entender. Tentando dar a alguém o que vivi e não sei a quem, mas " +
+                             "não quero ficar com o que vivi. Não sei o que fazer do que vivi, " +
+                             "tenho medo dessa desorganização profunda. Não confio no que me " +
+                             "aconteceu. Aconteceu-me alguma coisa que eu, pelo fato de não a " +
+                             "saber como viver, vivi uma outra? A isso quereria chamar " +
+                             "desorganização, e teria a segurança de me aventurar, porque "+
+                             "saberia depois para onde voltar: para a organização anterior. A isso "+
+                             "prefiro chamar desorganização pois não quero me confirmar no "+
+                             "que vivi - na confirmação de mim eu perderia o mundo como eu o tinha, e sei que não tenho capacidade para outro. '"
     }
     # Você pode adicionar mais entradas aqui se necessário
 ]

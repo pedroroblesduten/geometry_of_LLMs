@@ -39,8 +39,9 @@ class ModelLLM:
 
         return generated_text
 
-    def generate(self, model_input):
-
+    def generate(self, input_prompt, max_new_tokens=500):
+        model_input = self.tokenizer(input_prompt, return_tensors="pt").to("cuda")
+        input_length = model_input.input_ids.size(1)
         with torch.no_grad():
             generated_tokens = self.model.generate(**model_input, max_new_tokens=max_new_tokens)
             generated_text = self.tokenizer.decode(generated_tokens[0][input_length:], skip_special_tokens=True)
@@ -48,8 +49,7 @@ class ModelLLM:
         return generated_text
 
     def get_tokens(self, text):
-        tokens = self.tokenizer(text, return_tensors='pt')
-        tokens = tokens[0].numpy()
+        tokens = self.tokenizer(text, return_tensors='pt').input_ids.to("cuda")
         return tokens
 
     def get_embeddings(self, tokens, layer=None):
@@ -57,10 +57,11 @@ class ModelLLM:
             layer = -1
 
         with torch.no_grad():
-            outputs = self.model(model_input, output_hidden_states=True)
-            model_embeddings = outputs.hidden_states[layer].cpu().numpy()
+            outputs = self.model(input_ids=tokens, output_hidden_states=True)
+            embeddings = outputs.hidden_states[layer]
 
         return embeddings
+
 
     def get_result_dict(self, data):
         model_input = data['prompt'] + data['begin_original']
@@ -70,7 +71,7 @@ class ModelLLM:
 
         # get tokens
         tokens_original = self.get_tokens(data['complete_original'])
-        tokens_generated = self.get_tokens(generated_text)
+        tokens_generated = self.get_tokens(data['begin_original'] + generated_text)
 
         # get embeddings
         embeddings_original = self.get_embeddings(tokens_original)
@@ -82,11 +83,13 @@ class ModelLLM:
                 'prompt_type': data['prompt_type'],
                 'begin_original': data['begin_original'],
                 'complete_original': data['complete_original'],
+                'embeddings_original': embeddings_original,
+                'embeddings_generated': embeddings_generated,
                 'tokens_original': tokens_original,
                 'tokens_generated': tokens_generated,
-                'embeddings_original': embeddings_original,
-                'embeddings_generated': embeddings_generated
                 }
+
+        return return_dict
 
 
 # Example usage
@@ -99,3 +102,7 @@ for example in loader:
     out = model_llm.generate_text(example['prompt'] + example['begin_original'])
     result_dict = model_llm.get_result_dict(example)
 
+    for chave, valor in result_dict.items():
+        print(colored(f" -- {chave}: --", 'green'))
+        print(valor)
+        print('\n')
