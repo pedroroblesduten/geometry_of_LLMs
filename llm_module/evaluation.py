@@ -17,7 +17,6 @@ def compute_geometric_metrics(embeddings: np.ndarray) -> Dict[str, Any]:
     }
 
 
-
 def get_convex_hull_comparison_plot(embeddings1, embeddings2) -> plt.Figure:
     hull1 = ConvexHull(embeddings1)
     hull2 = ConvexHull(embeddings2)

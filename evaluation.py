@@ -1,6 +1,7 @@
 from umap import UMAP
 from scipy.spatial import ConvexHull
 from typing import *
+import numpy as np
 
 def compute_geometric_metrics(
     self, 
