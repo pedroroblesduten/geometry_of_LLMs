@@ -8,11 +8,7 @@ import os
 import json
 
 class ModelLLM:
-    def __init__(self,
-                 model_name,
-                 save_results_path
-                 ):
-
+    def __init__(self, model_name, save_results_path):
         self.model_name = model_name
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(model_name, device_map='auto', torch_dtype=torch.float16)
@@ -43,13 +39,22 @@ class ModelLLM:
         print(colored("───────────────────────────────────────────────────", "cyan"))
         print('\n')
 
+        # Create a dictionary to store all the information
+        result_dict = {
+            'author': data['author'],
+            'prompt': data['prompt'],
+            'prompt_type': data['prompt_type'],
+            'begin_original': data['begin_original'],
+            'complete_original': data['complete_original'],
+            'embeddings_original': data['embeddings_original'].tolist(),
+            'embeddings_generated': data['embeddings_generated'].tolist(),
+            'tokens_original': data['tokens_original'].tolist(),
+            'tokens_generated': data['tokens_generated'].tolist(),
+            'generated_text': generated_text
+        }
+
         # Save the result to a JSON file if save_to_json is True
         if save_to_json:
-            result_dict = {
-                'input_prompt': input_prompt,
-                'generated_text': generated_text
-            }
-
             json_filename = os.path.join(self.save_results_path, 'result.json')
             with open(json_filename, 'w') as json_file:
                 json.dump(result_dict, json_file)
@@ -112,12 +117,11 @@ class ModelLLM:
 # Example usage
 model_llm = ModelLLM("meta-llama/Llama-2-7b-chat-hf", "./resultados/")
 
-# load data
+# Load data
 loader = LoadData('./data/inputs.jsonl')
 
 for example in loader:
-    out = model_llm.generate_text(example['prompt'] + example['begin_original'])
-    result_dict = model_llm.get_result_dict(example)
+    out = model_llm.generate_text(example['prompt'] + example['begin_original'], save_to_json=True)
 
     for chave, valor in result_dict.items():
         print(colored(f" -- {chave}: --", 'green'))
