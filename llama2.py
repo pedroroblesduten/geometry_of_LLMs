@@ -11,6 +11,8 @@ tokenizer = LlamaTokenizer.from_pretrained(model_id)
 
 model = LlamaForCausalLM.from_pretrained(model_id, device_map='auto', torch_dtype=torch.float16)
 
+print(model)
+
 print("\033[92m" + "-- INPUT PROMPT --" + "\033[0m")
 eval_prompt = """
 Fala ai meu mano llama, tudo bem?
