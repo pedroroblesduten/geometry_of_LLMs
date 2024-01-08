@@ -95,6 +95,9 @@ class ModelLLM:
 # Example usage
 model_llm = ModelLLM("meta-llama/Llama-2-7b-chat-hf", "./results/")
 
+# Create an empty list to store result dictionaries
+results_list = []
+
 # load data
 loader = LoadData('./data/inputs.jsonl')
 
@@ -102,7 +105,19 @@ for example in loader:
     out = model_llm.generate_text(example['prompt'] + example['begin_original'])
     result_dict = model_llm.get_result_dict(example)
 
+    # Append the result dictionary to the list
+    results_list.append(result_dict)
+
     for chave, valor in result_dict.items():
         print(colored(f" -- {chave}: --", 'green'))
         print(valor)
         print('\n')
+
+# Define the path for the JSON file
+json_file_path = "./resultados/results.json"
+
+# Write the list of result dictionaries to the JSON file
+with open(json_file_path, 'w') as json_file:
+    json.dump(results_list, json_file, indent=4)
+
+print(f"Results saved to {json_file_path}")
