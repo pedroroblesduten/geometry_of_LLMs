@@ -43,26 +43,35 @@ class ModelLLM:
         print(colored("───────────────────────────────────────────────────", "cyan"))
         print('\n')
 
-        # Save all information to a JSON file if save_to_json is True
+        # Save the result to a JSON file if save_to_json is True
         if save_to_json:
             result_dict = {
-                'autor': example['author'],
+                'input_prompt': input_prompt,
+                'generated_text': generated_text,
+                'author': example['author'],
                 'prompt': example['prompt'],
                 'prompt_type': example['prompt_type'],
                 'begin_original': example['begin_original'],
                 'complete_original': example['complete_original'],
-                'embeddings_original': example['embeddings_original'].tolist(),
-                'embeddings_generated': example['embeddings_generated'].tolist(),
-                'tokens_original': example['tokens_original'].tolist(),
-                'tokens_generated': example['tokens_generated'].tolist(),
-                'generated_text': generated_text
             }
+
+            tokens_original = self.get_tokens(example['complete_original'])
+            tokens_generated = self.get_tokens(example['begin_original'] + generated_text)
+
+            embeddings_original = self.get_embeddings(tokens_original)
+            embeddings_generated = self.get_embeddings(tokens_generated)
+
+            result_dict['embeddings_original'] = embeddings_original.tolist()
+            result_dict['embeddings_generated'] = embeddings_generated.tolist()
+            result_dict['tokens_original'] = tokens_original.tolist()
+            result_dict['tokens_generated'] = tokens_generated.tolist()
 
             json_filename = os.path.join(self.save_results_path, 'result.json')
             with open(json_filename, 'w') as json_file:
-                json.dump(result_dict, json_file)
+                json.dump(result_dict, json_file, indent=4)
 
         return generated_text
+
 
     def generate(self, input_prompt, max_new_tokens=500):
         model_input = self.tokenizer(input_prompt, return_tensors="pt").to("cuda")
@@ -129,5 +138,8 @@ for example in loader:
 
     for chave, valor in result_dict.items():
         print(colored(f" -- {chave}: --", 'green'))
-        print(valor)
+        if isinstance(valor, list):
+            print(json.dumps(valor, indent=4))
+        else:
+            print(valor)
         print('\n')
