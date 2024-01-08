@@ -33,30 +33,6 @@ class ModelLLM:
         input_length = model_input.input_ids.size(1)
 
         with torch.no_grad():
-<<<<<<< HEAD
-            generated_output = self.model.generate(
-                **model_input, max_new_tokens=max_new_tokens)
-
-            generated_text = self.tokenizer.decode(
-                generated_output[0][input_length:], skip_special_tokens=True)
-        
-        return generated_text, generated_output if return_embbdings else generated_text
-
-    def generate_tokens(self, text)-> torch.Tensor:
-        tokens = self.tokenizer(text, return_tensors="pt")
-        return tokens
-
-    def get_embeddings_from_input(self, input_text)-> torch.Tensor:
-        model_input = self.tokenizer(input_text, return_tensors="pt").to("cuda")
-        with torch.no_grad():
-            outputs = self.model(**model_input, output_hidden_states=True)
-            input_embeddings = outputs.hidden_states[-1].cpu()
-        
-        return input_embeddings
-
-    def save_results(self, file_name, generated_text, generated_tokens, generated_embeddings):
-        raise NotImplementedError("")
-=======
             generated_output = self.model.generate(**model_input, max_new_tokens=max_new_tokens)
             generated_text = self.tokenizer.decode(generated_output[0][input_length:], skip_special_tokens=True)
 
@@ -158,7 +134,6 @@ loader = LoadData('./data/inputs.jsonl')
 for example in loader:
     out = model_llm.generate_text(example['prompt'] + example['begin_original'])
     result_dict = model_llm.get_result_dict(example)
->>>>>>> 6a0393a22e1d63fb6629d2ae7b9c278917ddd3fc
 
     for chave, valor in result_dict.items():
         print(colored(f" -- {chave}: --", 'green'))
