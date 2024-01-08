@@ -46,15 +46,15 @@ class ModelLLM:
         # Save all information to a JSON file if save_to_json is True
         if save_to_json:
             result_dict = {
-                'autor': data['author'],
-                'prompt': data['prompt'],
-                'prompt_type': data['prompt_type'],
-                'begin_original': data['begin_original'],
-                'complete_original': data['complete_original'],
-                'embeddings_original': data['embeddings_original'].tolist(),
-                'embeddings_generated': data['embeddings_generated'].tolist(),
-                'tokens_original': data['tokens_original'].tolist(),
-                'tokens_generated': data['tokens_generated'].tolist(),
+                'autor': example['author'],
+                'prompt': example['prompt'],
+                'prompt_type': example['prompt_type'],
+                'begin_original': example['begin_original'],
+                'complete_original': example['complete_original'],
+                'embeddings_original': example['embeddings_original'].tolist(),
+                'embeddings_generated': example['embeddings_generated'].tolist(),
+                'tokens_original': example['tokens_original'].tolist(),
+                'tokens_generated': example['tokens_generated'].tolist(),
                 'generated_text': generated_text
             }
 
