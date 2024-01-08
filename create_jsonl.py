@@ -6,17 +6,8 @@ example_content = [
         "author": "clarice lispector",
         "prompt_type": 1,
         "prompt": "write a paragraph to continue the story that follows.: \n",
-        "begin_original": "'estou procurando, estou procurando. Estou tentando entender. Tentando dar a alguém o que vivi e não sei a quem, mas não quero ficar com o que vivi. Não sei o que fazer com o que vivi, tenho medo dessa desorganização profunda.'",
-        "complete_original": "'estou procurando, estou procurando. Estou tentando " +
-                             "entender. Tentando dar a alguém o que vivi e não sei a quem, mas " +
-                             "não quero ficar com o que vivi. Não sei o que fazer do que vivi, " +
-                             "tenho medo dessa desorganização profunda. Não confio no que me " +
-                             "aconteceu. Aconteceu-me alguma coisa que eu, pelo fato de não a " +
-                             "saber como viver, vivi uma outra? A isso quereria chamar " +
-                             "desorganização, e teria a segurança de me aventurar, porque "+
-                             "saberia depois para onde voltar: para a organização anterior. A isso "+
-                             "prefiro chamar desorganização pois não quero me confirmar no "+
-                             "que vivi - na confirmação de mim eu perderia o mundo como eu o tinha, e sei que não tenho capacidade para outro. '"
+        "begin_original": "'COMING INTO MOHER over the bridge, you may see a terrace of houses by the river. They are to the left of the bridge, below it. Their narrow height and faded air of importance make them seem to mark the approach to some larger town. The six dwellings unite into one frontage, colour-washed apricot years ago. They face north. Their lower sash windows, front steps and fanlit front doors are screened by lime trees, making for privacy. There are area railings. Between them and the water runs a road with a parapet, which comes to its end opposite the last house.'",
+        "complete_original": "'On the other side of the bridge picturesquely rises a ruined castle – more likely to catch the tourist’s eye. Woods, from which the river emerges, go back deeply behind the ruin: on clear days there is a backdrop of Irish-blue mountains. Otherwise Moher has little to show. The little place prospers – a market town with a square, on a main road. The hotel is ample, cheerful, and does business. Moreover Moher is, and has been for ages, a milling town. Obsolete stone buildings follow you some way along the river valley as, having passed through Moher, you pursue your road. The flour-white modern mills, elsewhere, hum.'"
     }
     # Você pode adicionar mais entradas aqui se necessário
 ]
