@@ -66,7 +66,7 @@ class ModelLLM:
             result_dict['tokens_original'] = tokens_original.tolist()
             result_dict['tokens_generated'] = tokens_generated.tolist()
 
-            json_filename = os.path.join(self.save_results_path, 'result.json')
+            json_filename = os.path.join(self.save_results_path, 'gen_eli4.json')
             with open(json_filename, 'w') as json_file:
                 json.dump(result_dict, json_file, indent=4)
 
