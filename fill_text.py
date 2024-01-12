@@ -21,20 +21,10 @@ def main(input_path, model_name_or_path, device, output_path, seed, num_samples,
     loader = LoadData(input_path)
 
     print("Begin experiment...")
-    result = {}
-    i = 0 # contador dos trechos  lidos de um autor
-    author = ""
-    timemark = datetime.now().strftime("%m%d%Y_%H%M%S")    
+    result = {}    
     for example in tqdm(loader, unit="input", desc="text inputs"):
         prompt_type = example['prompt_type']
-        
-        # Mudou de autor? reniciar contador, senao incrementa
-        if author != example['author']:
-            author = example['author']
-            i=0 
-        else:
-            i+=1 
-        
+        author = example["author"]
         if verbose:
             print(colored(
                 f"-->Info: autor: {example['author']}, prompt_type: {example['prompt_type']}", "yellow"))
@@ -73,7 +63,8 @@ def main(input_path, model_name_or_path, device, output_path, seed, num_samples,
              })
         
         result["generated"] = generated
-        json_filename = os.path.join(output_path, f"{author.lower().replace(' ', '_')}_{i}_{prompt_type}_{timemark}.json")
+        timemark = datetime.now().strftime("%m%d%Y_%H%M%S")
+        json_filename = os.path.join(output_path, f"{author.lower().replace(' ', '_')}_{prompt_type}_{timemark}.json")
         print(f"Saving file", end="...\t")
         with open(json_filename, 'w') as json_file:
             json.dump(result, json_file, indent=2)

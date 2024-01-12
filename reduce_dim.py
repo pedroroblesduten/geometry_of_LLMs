@@ -10,40 +10,35 @@ MODEL_NAMES = ["umap"]
 NUM_SETUPS = 2
 
 
-def main(input_paths, output_path, model_name, n_components, verbose, setup):
+def main(input_paths, model_name, n_components, verbose, setup):
     data = []
+    print(model_name, n_components, "components")
     for path in input_paths:
         files = (glob.glob(path))
         for file in files:
             with open(file, 'r', encoding="utf8") as fp:
-                data_file = json.load(fp)
-                data.append(data_file)
+                example = json.load(fp)
+                example['path'] = file
+                data.append(example)
 
-
-    if len(data) == 1 and isinstance(data[0], list):
-        data = data[0]
 
     model = get_projection_model(model_name, n_components, verbose)
     if setup == 1:
-        output = setup1(model, data, n_components)
+        setup1(model, data, n_components)
     else:
         raise NotImplementedError("Setup not found")
 
-    
-    print('Saving output file', end="...")
-    with open(output_path, 'w', encoding="utf8") as fp:
-        json.dump(data, fp)
     print("Done")
     print("Execution Finished")
     
+
     
-
-
 def setup1(model, data, n_components):
     embeddings = []
     for example in tqdm(data, desc="Joining word emmbdings", unit='texts'):
         embeddings.append(np.array(example['embeddings_original']))
-        embeddings.append(np.array(example['embeddings_generated']))
+        for sample in  example['generated']:
+            embeddings.append(np.array(sample['embeddings_generated']))
     
     print("Tranning projection model...")
     embeddings = np.concatenate(embeddings, axis=1)
@@ -54,16 +49,21 @@ def setup1(model, data, n_components):
     del embeddings
     for example in tqdm(data, desc="Genereting reduced embeddings", unit='embeddings'):
         ori = np.array(example['embeddings_original'])
-        gen = np.array(example['embeddings_generated'])
-        
-        example[f"{n_components}d_original"] = model.transform(
+        example[f"s1_{n_components}d_original"] = model.transform(
             ori.reshape(-1, ori.shape[-1])).tolist()
-
-        example[f"{n_components}d_generated"] = model.transform(
-            gen.reshape(-1, gen.shape[-1])).tolist()
         
-    return data
-
+        for sample in example['generated']:
+            gen = np.array(sample['embeddings_generated'])
+        
+            sample[f"s1_{n_components}d_generated"] = model.transform(
+                gen.reshape(-1, gen.shape[-1])).tolist()
+    
+        print('Saving updated file', end="...")
+        with open(example['path'], 'w', encoding="utf8") as fp:
+            del example['path']
+            json.dump(example, fp)
+        
+        
 
 def get_projection_model(name, n_components, verbose):
     if name == 'umap':
@@ -83,12 +83,6 @@ if __name__ == '__main__':
         'input_paths', 
         nargs='+', 
         help='Paths to input files, accepts wilds cards')
-    
-    parser.add_argument(
-        '--output-path', 
-        '-o',
-        default='./resultados/final_file.json',
-        help='Path to output file')
     
     parser.add_argument(
         '--model-name', 
