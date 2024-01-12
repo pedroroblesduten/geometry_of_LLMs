@@ -10,12 +10,12 @@ class ModelLLM:
                  ):
 
         self.model_name = model_name
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name, token="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")
         self.save_results_path = save_results_path
         self.device = device
         
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_name, device_map=device, torch_dtype=torch.float16)
+            model_name, device_map=device, torch_dtype=torch.float16, token="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")
         
         self.model.eval()
         

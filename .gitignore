@@ -1,1 +1,6 @@
 **/model/
+*.json
+*jsonl
+__pycache__/
+*.png
+*.txt
