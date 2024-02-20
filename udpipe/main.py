@@ -8,7 +8,7 @@ import rank_distance as rkd
 # NÃO ALTERAR
 model = 'english-ewt-ud-2.12-230717'
 parser_url = "http://lindat.mff.cuni.cz/services/udpipe/api/process"
-input_folder = 'resultados_llm/'
+input_folder = '../resultados/'
 output_folder = 'ud_pipe_output/'
 # NÃO ALTERAR
 
