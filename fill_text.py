@@ -25,6 +25,7 @@ def main(input_path, model_name_or_path, device, output_path, seed, num_samples,
     for example in tqdm(loader, unit="input", desc="text inputs"):
         prompt_type = example['prompt_type']
         author = example["author"]
+        title = example["title"]
         if verbose:
             print(colored(
                 f"-->Info: autor: {example['author']}, prompt_type: {example['prompt_type']}", "yellow"))
@@ -33,6 +34,7 @@ def main(input_path, model_name_or_path, device, output_path, seed, num_samples,
         embeddings_original = model_llm.get_embeddings(tokens_original)
         result = {
             'author': author,
+            'title': title,
             'prompt': example['prompt'],
             'prompt_type': prompt_type,
             'begin_original': example['begin_original'],
