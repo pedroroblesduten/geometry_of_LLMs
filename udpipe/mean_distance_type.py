@@ -4,7 +4,7 @@ def carregar_dados(arquivo_json):
     with open(arquivo_json, 'r', encoding='utf-8') as file:
         return json.load(file)
 
-def processa_estatisticas(data):
+def processa_estatisticas(data, etiqueta):
     contagem_relacoes = {}
     soma_distancias = {}
     total_palavras = 0
@@ -13,7 +13,7 @@ def processa_estatisticas(data):
     for sentenca in data:
         for palavra in sentenca['palavras']:
             if int(palavra['ID'].isdigit()):
-                relacao = palavra['DEPREL']
+                relacao = palavra[etiqueta]
                 head_id = int(palavra['HEAD']) if palavra['HEAD'].isdigit() else None
                 word_id = int(palavra['ID'])
 
@@ -31,11 +31,7 @@ def processa_estatisticas(data):
 
     return estatisticas, contagem_relacoes, total_palavras
 
-def calcular_estatisticas(arquivo_json):
+def calcular_estatisticas(arquivo_json, etiqueta):
     data = carregar_dados(arquivo_json)
-    estatisticas, contagem, total_palavras = processa_estatisticas(data)
-    # print(f'Total de Palavras no texto: {total_palavras}')
-    # print(f"Contagem de relações distintas no texto: {len(contagem.keys())}\n")
-    # for relacao in contagem.keys():
-    #     print(f"\tRelação {relacao}:\n\tContagem={contagem[relacao]}, Proporção={estatisticas[relacao][0]}, Distância Média={estatisticas[relacao][1]}")
+    estatisticas, contagem, total_palavras = processa_estatisticas(data, etiqueta)
     return estatisticas, contagem

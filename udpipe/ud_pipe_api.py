@@ -8,14 +8,19 @@ def process_text_files(model, parser_url, input_path, output_path):
     for filename in files:
         input_file = os.path.join(input_path, filename)
         print(f"Opening {filename}")
+        generated_texts = []
 
         with open(input_file, 'r', encoding='utf-8') as json_file:
             json_data = json.load(json_file)
 
             author = json_data["author"]
             begin_original = json_data["begin_original"]
-            generated_texts = [text_data["generated_text"] for text_data in json_data["generated"]]
-
+            for text_data in json_data["generated"]:
+                for c in text_data["generated_text"]:
+                    if c.isalpha():
+                        generated_texts.append(text_data["generated_text"])
+                        break
+                    
             try:
                 escaped_begin_original = shlex.quote(begin_original)
 
@@ -61,6 +66,7 @@ def json_format(input_folder, output_folder):
 
     for arquivo in os.listdir(input_folder):
         if os.path.isfile(os.path.join(input_folder, arquivo)):
+            print(arquivo)
             arvores_sentencas = []
             arvore_atual = {}
 
@@ -90,6 +96,8 @@ def json_format(input_folder, output_folder):
                             'MISC': campos[9]
                         }
                         arvore_atual.setdefault('palavras', []).append(palavra)
+                    else:
+                        print(linha)
 
             if arvore_atual:
                 arvores_sentencas.append(processa_arvore(arvore_atual))
